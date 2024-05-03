@@ -1,12 +1,12 @@
-package dev.durgesh.EcomProductService.DTO;
+package dev.durgesh.EcomProductService.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductResponseDto {
-    private int productId;
+public class Product {
+    private int id;
     private String title;
     private double price;
     private String description;

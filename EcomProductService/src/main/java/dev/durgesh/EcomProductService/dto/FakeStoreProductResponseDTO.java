@@ -1,23 +1,23 @@
-package dev.durgesh.EcomProductService.DTO;
+package dev.durgesh.EcomProductService.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class FakeStoreProductResponseDto { //for loose coupling
-//must be matching attributes name with jason
+public class FakeStoreProductResponseDTO { // for loosely coupled
     private int id;
     private String title;
     private double price;
     private String description;
     private String category;
     private String image;
-    private FakeStoreProductRatingDto rating;
-
+    private FakeStoreProductRatingDTO rating;
 }
+
+
 /*
-{
+{   Note: our key/ attribute must be match with jason's attributes
         "id": 1,
         "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
         "price": 109.95,

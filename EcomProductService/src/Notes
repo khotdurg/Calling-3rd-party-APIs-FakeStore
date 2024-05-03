@@ -1,0 +1,105 @@
+1. go to the website start.spring.io
+ * select Maven, java, 3.2.4, dev.durgesh, EcomProductService, jar
+ * Select Dependencies : Lombok, MySql Driver, Spring Web, Spring Data JPA, Spring Boot Actuator etc.
+ * Generate -> extract -> select file in intellij
+
+2. package: controller
+
+3. Class: DemoController
+ * will create two call: @GetMapping and @DeleteMapping
+
+4. "Now, if we run the project and encounter an error, we should delete or comment out the dependencies for the database
+connection in the pom.xml file, specifically the spring-boot-starter-data-jpa, since we've added these dependencies but
+are not currently using them, leading to the error. After removing or commenting out these dependencies, we need to
+reload or refresh the pom.xml file. Once this is done, we can run the project again, and the error should be resolved."
+
+5. Open postman-> http://localhost:8080/hi we will get an error if we will done any operation expect delete because hi is the
+DeleteMapping.
+* If we set two debugger points in the GET and DELETE mapping methods, whenever we send an HTTP request from Postman,
+for example, for hello, we will be able to see the debugger point line numbers in the threads and variables. This applies
+similarly for other requests as well.
+
+6.This is for actuator (management.endpoints.web.exposure.include = mappings) this helps us to see all the url that we
+have in our code.
+* we will hit the request in postman (http://localhost:8080/actuator/mappings) we will get....
+* Springs creates list/ object of all the APIs that we will create.
+* this is called mapping, map your url/api to a particular method this is called mapping.
+
+7. End points
+* http://localhost:8080/    <-- this is an domain name
+* hi                        <-- is the endpoint/ apiurl
+* www.google.com/bhandara   <-- first one is domain name and second one is endpoint/apiurl
+
+8. Spring Boot maintains mapping of all endpoints and their respective methods.
+
+9. When we request Filter, Dispatcher servlet (handler mapping come inside Dispatcher servlet), Interceptor and controller
+come in the picture.
+
+
+Q.Flow of how the requests are handle?
+=> Refer diagram from notes itself.
+1. Filters:-  are the Authentication and Authorization checks, logging, monitor litency.
+    What is filter? => A very first piece of code that talks to a request that is called filter.
+  * Spring security comes in the filter part
+2. DispatcherServlet: it is Responsible for routing the request to that particular class/ method.
+  * It talks to HandlerMapping. and Handler is the class that stores all the mappings
+Suppose, take hello, it will passes through filters and then dispatcher servlet. Dispatcher servlet will ask to Handler
+Mapping that what is the method name for hello, and that will found the inside DemoController, if it is found dispatcher
+servlet will pass the data to the controller
+3. interceptor : it resolves cross cutting concern.
+
+10. Spring Creates all the mappings and these mapping stored in the Handler Mapping
+
+                                                3/may/2024
+* We directly cannot create build service class Dependency Inversion Principle (DIP) violation. so we create Product service as interface
+* to convert entity object to DTO  we use mapper
+* we will have 2 service class
+    1 for to call client for fake store
+    2 will call db of product service
+
+* if i will use @Autowired for the product service in the productController itself, then how will our controller know which
+particular class should be Autowired?. contoller will get confused becuase ProductService is an interface and which inmplements
+two more classes.
+* when we run our application it get error: Consider marking one of the beans as @Primary, updating the consumer to
+accept multiple beans, or using @Qualifier to identify the bean that should be consumed.
+Becuase, controller got confused to which Bean we must be inject
+
+*properties which we have use in for url in the application.properties which should be read and inject in the FakeStoreClient.
+to read and inject the properties we use @Value()
+
+* Deserialisation : process of converting a jason string to an object.
+  Serialisation : process of converting an object to a jason string.
+
+* The error is occurring because we implemented FakestoreClient, assuming that Spring Boot would handle it, but we did
+not inform Spring Boot about it. Therefore, we need to use the @Component annotation above the client class. We are using
+@Component because that class is neither a service nor a controller. Once we use the @Component annotation, an object
+for that class will be created.
+ Field productService in dev.durgesh.EcomProductService.controller.ProductController required a single bean, but 2 were found:
+	- fakeStoreProductServiceImpl: defined in file [C:\Users\durge\Downloads\EcomProductService\EcomProductService\target\classes\dev\durgesh\EcomProductService\service\FakeStoreProductServiceImpl.class]
+	- productServiceImpl: defined in file [C:\Users\durge\Downloads\EcomProductService\EcomProductService\target\classes\dev\durgesh\EcomProductService\service\ProductServiceImpl.class]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

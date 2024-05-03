@@ -1,20 +1,21 @@
-package dev.durgesh.EcomProductService.Service;
+package dev.durgesh.EcomProductService.service;
 
-import dev.durgesh.EcomProductService.Client.FakeStoreClient;
-import dev.durgesh.EcomProductService.DTO.FakeStoreProductResponseDto;
-import dev.durgesh.EcomProductService.Entity.Product;
+import dev.durgesh.EcomProductService.client.FakeStoreClient;
+import dev.durgesh.EcomProductService.dto.FakeStoreProductResponseDTO;
+import dev.durgesh.EcomProductService.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class FakeStoreProductServiceImpl implements ProductService{
+@Service("fakeStoreProductService")
+public class FakeStoreProductServiceImpl implements ProductService{ //this will call client on fakestore
     @Autowired
     private FakeStoreClient fakeStoreClient;
     @Override
-    public List<FakeStoreProductResponseDto> getAllProducts() {
-        List<FakeStoreProductResponseDto> fakeStoreProducts = fakeStoreClient.getAllProduct();
+    public List<FakeStoreProductResponseDTO> getAllProducts() {
+        List<FakeStoreProductResponseDTO> fakeStoreProducts = fakeStoreClient.getAllProducts();
         return fakeStoreProducts;
     }
 
