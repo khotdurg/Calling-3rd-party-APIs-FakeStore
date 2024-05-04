@@ -50,7 +50,7 @@ servlet will pass the data to the controller
 
 10. Spring Creates all the mappings and these mapping stored in the Handler Mapping
 
-                                                3/may/2024
+                                                03/May/2024
 * We directly cannot create build service class Dependency Inversion Principle (DIP) violation. so we create Product service as interface
 * to convert entity object to DTO  we use mapper
 * we will have 2 service class
@@ -70,6 +70,8 @@ to read and inject the properties we use @Value()
 * Deserialisation : process of converting a jason string to an object.
   Serialisation : process of converting an object to a jason string.
 
+* send the request from postman: all product list get call : http://localhost:8080/product
+
 * The error is occurring because we implemented FakestoreClient, assuming that Spring Boot would handle it, but we did
 not inform Spring Boot about it. Therefore, we need to use the @Component annotation above the client class. We are using
 @Component because that class is neither a service nor a controller. Once we use the @Component annotation, an object
@@ -79,11 +81,43 @@ for that class will be created.
 	- productServiceImpl: defined in file [C:\Users\durge\Downloads\EcomProductService\EcomProductService\target\classes\dev\durgesh\EcomProductService\service\ProductServiceImpl.class]
 
 
+                                                04/May/2024
+* now we will call specific product id
+    Controller -> Input -> DTO, Output -> DTO, Downstream(service) -> DTO
+    controller only deals with DTOs
 
+    Service -> Input -> DTO, Output -> DTO, DownStream(Repository) -> Entity
+    layer at which dto to entity, or entity to dto conversion happens
+    conversion can be part of business logic
 
+    Repository -> Input -> Entity, Output -> Entity, DB saves Entity
 
+    Client -> Input -> DTO, Output -> DTO, all DTO
 
+* Send request from postman for get single product details get call: http://localhost:8080/product/1
 
+* Dispatcher Servlet make sure that the call successfully reached to the controller method.
+handler mapping does not do the mapping, but handler mapping store the data
+
+                                        Exception Handling for for single product
+* if we will check the product on there id on postman we will know fakestore has product upto product id 20 but after 21
+products not available on fakestore itslef. so that we get nothing in that case we need to throw exception
+when we debug we see 21 product id is showing null, it should not show null.
+While debugging debugger throwing exception it thows in the internal implementation of try catch, and we are not handling
+exception anyh where by using older method
+* we must have specific piece of code where 1 class should be able to handle entire application
+now, we will write specific code where exception being handle call controller advice.
+Will use Global Exception Handler.
+* Create ExceptionHandler class and top of the class write @ControllerAdvice
+    - @ControllerAdvice: If our controller tries throws an exception then @ControllerAdvice will advice contorller do not do,
+    such things do as per the configuration, as per the developer wants. in a simple words it says that to the controller
+    how to handle Exceptions
+* to responding back exception we will use ExceptionResponseDTO
+* How our code will know that this is the method that's need to be throw an exception use annotation @ExceptionHandler
+
+                                            Cart
+* Spring will never know which handler class is whether it is CartControllerExceptionHandler or ProductServiceExceptionHandler
+so that we need to use @ControllerAdvice(basePackageClasses = CartController.class) to the top of exception handler classes.
 
 
 

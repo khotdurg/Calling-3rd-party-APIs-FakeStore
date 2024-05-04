@@ -3,8 +3,9 @@ package dev.durgesh.EcomProductService.service;
 import dev.durgesh.EcomProductService.client.FakeStoreClient;
 import dev.durgesh.EcomProductService.dto.FakeStoreProductResponseDTO;
 import dev.durgesh.EcomProductService.entity.Product;
+import dev.durgesh.EcomProductService.exception.NoProductPresentException;
+import dev.durgesh.EcomProductService.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +15,21 @@ public class FakeStoreProductServiceImpl implements ProductService{ //this will 
     @Autowired
     private FakeStoreClient fakeStoreClient;
     @Override
-    public List<FakeStoreProductResponseDTO> getAllProducts() {
+    public List<FakeStoreProductResponseDTO> getAllProducts() { // to get all the product list
         List<FakeStoreProductResponseDTO> fakeStoreProducts = fakeStoreClient.getAllProducts();
+        if(fakeStoreProducts == null){
+            throw new NoProductPresentException("No products are found");
+        }
         return fakeStoreProducts;
     }
 
     @Override
-    public Product getProduct(int productId) {
-        return null;
+    public FakeStoreProductResponseDTO getProduct(int productId) throws ProductNotFoundException{ // for call the single product
+        FakeStoreProductResponseDTO fakeStoreProductResponseDTO = fakeStoreClient.getProductById(productId);
+        if(fakeStoreProductResponseDTO == null){
+            throw new ProductNotFoundException("Product not found with id: "+ productId);
+        }
+        return fakeStoreProductResponseDTO;
     }
 
     @Override
